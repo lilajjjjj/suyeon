@@ -28,7 +28,6 @@ int main() {
 
     fclose(queryFile);
     fclose(answerFile);
-    close(kvs);  // 데이터베이스 메모리 해제
+    kvs_close(kvs);  // 메모리 해제 (함수 이름 변경)
     return 0;
 }
-
