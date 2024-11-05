@@ -32,7 +32,7 @@ $(LARS): $(LOBJS)
 dynamic: $(OBJS) $(TARG_DYNAMIC)
 
 $(TARG_DYNAMIC): $(OBJS) $(LDSO)
-	$(CC) -o $(TARG_DYNAMIC) $(OBJS) $(LIBS)
+	$(CC) -o $(TARG_DYNAMIC) $(OBJS) $(LIBS) -Wl,-rpath=.
 	@echo "Dynamic executable $(TARG_DYNAMIC) created."
 
 $(LDSO): $(LOBJS)
