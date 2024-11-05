@@ -12,11 +12,15 @@ int main() {
         return 1;
     }
 
+    // kvs 객체 생성
+    kvs_t kvs;
+    open(&kvs); // kvs 초기화
+
     while (fscanf(query_file, "%[^,],%[^,],%s\n", operation, key, value) != EOF) {
         if (strcmp(operation, "put") == 0) {
-            put(key, value);
+            put(&kvs, key, value);  // kvs 객체 전달
         } else if (strcmp(operation, "get") == 0) {
-            char *result = get(key);
+            char *result = get(&kvs, key);  // kvs 객체 전달
             if (result) {
                 fprintf(answer_file, "get,%s,%s\n", key, result);
             } else {
@@ -25,7 +29,10 @@ int main() {
         }
     }
 
+    close(&kvs); // kvs 객체 정리
+
     fclose(query_file);
     fclose(answer_file);
     return 0;
 }
+
