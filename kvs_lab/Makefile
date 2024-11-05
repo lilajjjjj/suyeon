@@ -21,17 +21,23 @@ $(TARG): $(OBJS) $(LARS)
 
 $(LARS): $(LOBJS)
 	ar rs $(LARS) $(LOBJS)
+	@echo "Static library $(LARS) created."
 
 dynamic: $(TARG_DYNAMIC)
 
 $(TARG_DYNAMIC): $(OBJS) $(LDSO)
-	$(CC) -o $(TARG_DYNAMIC) $(OBJS) -L. -lkvs
+	$(CC) -o $(TARG_DYNAMIC) $(OBJS) $(LIBS)
+	@echo "Dynamic executable $(TARG_DYNAMIC) created."
 
 $(LDSO): $(LOBJS)
 	$(CC) -shared -o $(LDSO) $(LOBJS)
+	@echo "Shared library $(LDSO) created."
 
 %.o: %.c
 	$(CC) $(OPTS) -c $< -o $@
+	@echo "Compiled $< to $@."
 
 clean:
 	rm -f $(OBJS) $(LOBJS) $(LARS) $(LDSO) $(TARG) $(TARG_DYNAMIC)
+	@echo "Cleaned all generated files."
+
