@@ -3,10 +3,7 @@
 int main() {
     kvs_t *kvs = open();  // 데이터베이스 초기화
 
-    // 1. 사전 데이터 삽입
-    put(kvs, "tweet0", "customer985");  // 올바른 키-값 쌍을 추가하여 조회 가능하게 합니다.
-
-    // 2. query.dat 파일 읽기
+    // query.dat 파일 열기
     FILE *queryFile = fopen("query.dat", "r");
     FILE *answerFile = fopen("answer.dat", "w");
 
@@ -22,8 +19,10 @@ int main() {
 
         if (strcmp(operation, "get") == 0) {
             char *result = get(kvs, key);
-            // 키가 없으면 default_value 반환, 있으면 result 반환
-            fprintf(answerFile, "%s: %s\n", key, result ? result : default_value);
+            // 데이터가 없으면 출력하지 않음
+            if (result) {
+                fprintf(answerFile, "%s: %s\n", key, result);
+            }
         }
     }
 
@@ -32,3 +31,4 @@ int main() {
     close(kvs);  // 데이터베이스 메모리 해제
     return 0;
 }
+
