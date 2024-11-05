@@ -1,4 +1,4 @@
-SRCS = main.c
+SRCS = static_main.c
 LIBSRCS = open.c close.c put.c get.c 
 TARG = kvs_static
 TARG_DYNAMIC = kvs_dynamic
