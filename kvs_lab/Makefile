@@ -23,7 +23,7 @@ $(LARS): $(LOBJS)
 	ar rs $(LARS) $(LOBJS)
 	@echo "Static library $(LARS) created."
 
-dynamic: $(TARG_DYNAMIC)
+dynamic: $(OBJS) $(TARG_DYNAMIC)
 
 $(TARG_DYNAMIC): $(OBJS) $(LDSO)
 	$(CC) -o $(TARG_DYNAMIC) $(OBJS) $(LIBS)
@@ -40,4 +40,3 @@ $(LDSO): $(LOBJS)
 clean:
 	rm -f $(OBJS) $(LOBJS) $(LARS) $(LDSO) $(TARG) $(TARG_DYNAMIC)
 	@echo "Cleaned all generated files."
-
