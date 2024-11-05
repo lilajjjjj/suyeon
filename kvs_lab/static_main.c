@@ -1,38 +1,25 @@
-#include <stdio.h>
-#include <string.h>
 #include "kvs.h"
 
 int main() {
-    FILE *query_file = fopen("query.dat", "r");
-    FILE *answer_file = fopen("answer.dat", "w");
-    char operation[10], key[100], value[100];
+    SkipList *list = create_skiplist(16, 0.5);
+    FILE *queryFile = fopen("query.dat", "r");
+    FILE *answerFile = fopen("answer.dat", "w");
 
-    if (!query_file || !answer_file) {
-        perror("파일을 열 수 없습니다.");
-        return 1;
-    }
+    char line[256];
+    while (fgets(line, sizeof(line), queryFile)) {
+        char operation[10], key[256], value[256];
+        sscanf(line, "%[^,],%[^,],%s", operation, key, value);
 
-    // kvs 객체 생성
-    kvs_t kvs;
-    open(&kvs); // kvs 초기화
-
-    while (fscanf(query_file, "%[^,],%[^,],%s\n", operation, key, value) != EOF) {
         if (strcmp(operation, "put") == 0) {
-            put(&kvs, key, value);  // kvs 객체 전달
+            put(list, key, value);
         } else if (strcmp(operation, "get") == 0) {
-            char *result = get(&kvs, key);  // kvs 객체 전달
-            if (result) {
-                fprintf(answer_file, "get,%s,%s\n", key, result);
-            } else {
-                fprintf(answer_file, "get,%s,NOT_FOUND\n", key);
-            }
+            char *result = get(list, key);
+            fprintf(answerFile, "%s: %s\n", key, result ? result : value);
         }
     }
 
-    close(&kvs); // kvs 객체 정리
-
-    fclose(query_file);
-    fclose(answer_file);
+    fclose(queryFile);
+    fclose(answerFile);
+    free_skiplist(list);
     return 0;
 }
-
