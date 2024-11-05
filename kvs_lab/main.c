@@ -15,14 +15,14 @@ int main() {
     char line[256];
     while (fgets(line, sizeof(line), queryFile)) {
         char operation[10], key[256], value[256];
-        sscanf(line, "%[^,],%[^,],%s", operation, key, value);
+        sscanf(line, "%[^,],%[^,],%s", operation, key, default_value);
 
         if (strcmp(operation, "put") == 0) {
             put(kvs, key, value);  // Skip List에 키-값 저장
         } else if (strcmp(operation, "get") == 0) {
             char *result = get(kvs, key);  // 키로 값 조회
             // 값이 존재하면 result, 없으면 기본값 value를 출력
-            fprintf(answerFile, "%s\n", result ? result : value);
+            fprintf(answerFile, "%s\n", result ? result : default_value);
         }
     }
 
