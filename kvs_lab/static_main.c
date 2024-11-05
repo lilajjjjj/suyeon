@@ -1,10 +1,10 @@
-#include "kvs.h"  // kvs.h 파일을 포함하여 kvs_t와 관련 함수들을 사용
+#include "kvs.h"
 
 int main() {
-    kvs_t *kvs = create_skiplist(16, 0.5);  // kvs_t 포인터로 변경
+    kvs_t *kvs = open();  // 데이터베이스 초기화
 
     // 1. 사전 데이터 삽입
-    put(kvs, "tweet0", "customer985");  // 필요한 다른 키-값 쌍도 추가합니다.
+    put(kvs, "tweet0", "customer985");  // 필요한 다른 키-값 쌍도 추가 가능합니다.
 
     // 2. query.dat 파일 읽기
     FILE *queryFile = fopen("query.dat", "r");
@@ -24,6 +24,6 @@ int main() {
 
     fclose(queryFile);
     fclose(answerFile);
-    free_skiplist(kvs);  // 메모리 해제 함수 호출
+    close(kvs);  // 데이터베이스 메모리 해제
     return 0;
 }
